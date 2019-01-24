@@ -292,3 +292,42 @@ tmux_conf_copy_to_os_clipboard=false
 
 # move status line to top
 #set -g status-position top
+
+# enable vi-mode
+set-window-option -g mode-keys vi
+
+set -g mouse on
+
+# Copy to clipboard but don't automatically unselect
+bind -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-and-cancel 'xclip -i'
+
+# Allow double-click (word) / triple-click (line)
+## https://stackoverflow.com/questions/31404140/can-i-use-double-click-to-select-and-copy-in-tmux/46638561#46638561
+bind -T copy-mode-vi DoubleClick1Pane \
+    select-pane \; \
+    send -X select-word \; \
+    send -X copy-pipe-and-cancel 'xclip -i' \; \
+    display-message "Copied!"
+bind -n DoubleClick1Pane \
+    select-pane \; \
+    copy-mode -M \; \
+    send -X select-word \; \
+    send -X copy-pipe-and-cancel 'xclip -i' \; \
+    display-message "Copied!"
+
+bind -T copy-mode-vi TripleClick1Pane \
+    select-pane \; \
+    send -X select-line \; \
+    send -X copy-pipe-and-cancel 'xclip -i' \; \
+    display-message "Copied!"
+bind -n TripleClick1Pane \
+    select-pane \; \
+    copy-mode -M \; \
+    send -X select-line \; \
+    send -X copy-pipe-and-cancel 'xclip -i' \; \
+    display-message "Copied!"
+
+# use y in vi-mode to copy to clipboard 
+# bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -i'
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection-and-cancel

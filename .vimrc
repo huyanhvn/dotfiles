@@ -382,3 +382,5 @@ function! VisualSelection(direction, extra_filter) range
 endfunction
 
 set nopaste
+
+set re=0

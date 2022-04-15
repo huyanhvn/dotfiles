@@ -337,9 +337,11 @@ bind-key C-b last-window
 
 # Remap bind key
 unbind C-b
+unbind C-a
 set-option -g prefix `
 bind-key ` send-prefix
 
 # Copy/paste
 bind-key Space copy-mode
 bind-key Enter paste-buffer
+
